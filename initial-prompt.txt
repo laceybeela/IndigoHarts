@@ -1,0 +1,308 @@
+# #indigoharts
+#freelance
+# Project Overview
+We are building a custom operations management platform for a vacation rental cleaning company called Indigo Harts Cleaning Service.
+The platform will consist of:
+1 A React Native mobile application (iOS and Android)
+2 A Next.js web administration portal
+3 A Supabase backend for authentication, database, storage, and security
+4 Twilio integration for SMS messaging
+
+⠀This is a Phase 1 MVP intended to streamline cleaning operations, employee scheduling, guest communications, and property management.
+
+# Brand & Design Direction
+Use the Indigo Harts Cleaning Service logo as inspiration for the application design.
+Design aesthetic:
+* Clean
+* Friendly
+* Modern
+* Approachable
+* Feminine without feeling overly decorative
+* Organized and professional
+* Vacation rental hospitality focused
+
+⠀Visual inspiration:
+* Soft sage green
+* Light olive green
+* Warm white backgrounds
+* Floral accents used sparingly
+* Rounded corners
+* Soft shadows
+* Minimalist card-based layouts
+
+⠀Suggested color palette:
+Primary:
+* Sage Green (#C8D97A)
+
+⠀Secondary:
+* Soft Leaf Green (#A8C66C)
+
+⠀Background:
+* Warm White (#FAFAF7)
+
+⠀Surface:
+* White (#FFFFFF)
+
+⠀Accent:
+* Floral Pink (#E86AA6)
+
+⠀Text:
+* Charcoal (#222222)
+
+⠀Success:
+* Soft Green (#4CAF50)
+
+⠀Warning:
+* Amber (#FFB74D)
+
+⠀Error:
+* Soft Red (#E57373)
+
+⠀Typography style:
+* Modern sans-serif
+* Friendly and approachable
+* Similar to:
+  * Poppins
+  * Nunito
+  * Montserrat
+
+⠀Use rounded buttons, rounded cards, and generous spacing throughout the application.
+The overall experience should feel welcoming, clean, trustworthy, and easy to use for non-technical users.
+
+# User Roles
+# Administrator
+Administrators manage:
+* Employees
+* Properties
+* Guests
+* Stays
+* Cleaning Jobs
+* SMS Messages
+
+⠀Employee
+Employees manage:
+* Availability
+* Assigned Jobs
+* Cleaning Checklists
+
+⠀Employees should only see information relevant to their assigned jobs.
+
+# Core Business Model
+The company cleans short-term rental properties.
+Each property may have:
+* Photos
+* Access codes
+* Cleaning instructions
+* Guest instructions
+* SMS templates
+* Cleaning checklist templates
+
+⠀Properties receive guest stays.
+Guests check in and check out.
+Cleaning jobs are scheduled between stays.
+Employees complete cleaning jobs and notify administrators when complete.
+
+# Data Model
+# Users
+* id
+* name
+* email
+* phone
+* role
+
+⠀Roles:
+* admin
+* employee
+
+⠀
+# Properties
+* id
+* name
+* address
+* bedrooms
+* bathrooms
+* notes
+* entry_code
+* lockbox_code
+* wifi_name
+* wifi_password
+* photos
+
+⠀
+# Checklist Templates
+Belongs to Property
+* id
+* property_id
+* name
+
+⠀Checklist Items
+* id
+* template_id
+* task_name
+* display_order
+
+⠀
+# Guests
+* id
+* first_name
+* last_name
+* phone
+* email
+
+⠀
+# Stays
+A stay represents a reservation at a property.
+* id
+* property_id
+* guest_id
+* check_in_date
+* check_out_date
+* status
+
+⠀
+# SMS Templates
+Belongs to Property
+* id
+* property_id
+* template_name
+* message_body
+
+⠀Supported variables:
+{{guest_name}} {{property_name}} {{entry_code}} {{check_in_date}} {{check_out_date}}
+
+# Employee Availability
+* id
+* employee_id
+* date
+* available
+
+⠀
+# Cleaning Jobs
+* id
+* property_id
+* stay_id
+* assigned_employee_id
+* scheduled_date
+* status
+
+Cleaning Job Statuses
+
+- assigned
+- accepted
+- in_progress
+- completed
+
+Track timestamps:
+
+- assigned_at
+- accepted_at
+- started_at
+- completed_at
+
+⠀
+# Job Checklists
+Generated from Property Checklist Templates.
+Checklist items are copied when a job is created.
+Historical jobs must not change when checklist templates are edited later.
+
+# Mobile Application
+# Authentication
+Login Forgot Password
+
+# Admin Screens
+Dashboard
+Employees
+* List
+* Details
+* Create
+* Edit
+
+⠀Properties
+* List
+* Details
+* Create
+* Edit
+
+⠀Guests
+* List
+* Details
+
+⠀Stays
+* List
+* Details
+
+⠀Jobs
+* List
+* Create
+* Edit
+
+⠀Availability Calendar
+SMS Center
+Settings
+
+# Employee Screens
+My Jobs
+Job Details
+Checklist
+Availability Calendar
+Profile
+
+# Web Admin Portal
+Dashboard
+Employees
+Properties
+Guests
+Stays
+Jobs
+Availability Calendar
+SMS Center
+Settings
+
+# MVP Features
+Authentication
+Employee Management
+Property Management
+Property Photos
+Guest Management
+Stay Management
+Job Scheduling
+Job Assignment
+Availability Tracking
+Checklist Completion
+Admin Notifications
+SMS Messaging
+Role-Based Permissions
+
+# Technical Requirements
+Frontend:
+* Next.js
+* React Native
+* TypeScript
+* Tailwind or NativeWind
+
+⠀Backend:
+* Supabase Auth
+* PostgreSQL
+* Supabase Storage
+* Row-Level Security
+
+⠀Messaging:
+* Twilio SMS
+
+⠀Architecture:
+* Shared TypeScript types between web and mobile
+* Service layer abstraction
+* Reusable UI component library
+* Clean folder structure
+* Production-ready code
+
+⠀Generate:
+1 Complete application architecture
+2 Database schema
+3 Supabase table definitions
+4 Row-level security policies
+5 Mobile screen wireframes
+6 Web portal wireframes
+7 Navigation structure
+8 Recommended folder structure
+9 Development roadmap for implementation

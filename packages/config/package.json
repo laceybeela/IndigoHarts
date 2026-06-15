@@ -1,0 +1,18 @@
+{
+  "name": "@indigo-harts/config",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "files": [
+    "tailwind-preset.ts",
+    "eslint.config.mjs",
+    "tsconfig.*.json"
+  ],
+  "dependencies": {
+    "tailwindcss": "^3.4.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}

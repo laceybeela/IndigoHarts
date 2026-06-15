@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "Indigo Harts",
+    "slug": "indigo-harts",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "indigoharts",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#FAFAF7"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.indigoharts.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#FAFAF7"
+      },
+      "package": "com.indigoharts.app"
+    },
+    "plugins": [
+      "expo-router"
+    ]
+  }
+}
