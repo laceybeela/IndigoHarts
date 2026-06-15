@@ -19,6 +19,7 @@ import {
   createChecklistTemplateSchema,
   createGuestSchema,
   updateGuestSchema,
+  createStaySchema,
   updateStaySchema,
   createSmsTemplateSchema,
   updateSmsTemplateSchema,

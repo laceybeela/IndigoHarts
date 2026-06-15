@@ -43,5 +43,12 @@ export async function updateProperty(client: SupabaseClient, id: string, updates
 }
 
 export async function deactivateProperty(client: SupabaseClient, id: string) {
-  return updateProperty(client, id, { is_active: false });
+  const { data, error } = await client
+    .from('properties')
+    .update({ is_active: false })
+    .eq('id', id)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
 }

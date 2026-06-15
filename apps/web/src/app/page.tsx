@@ -1,10 +1,5 @@
+import { redirect } from 'next/navigation';
+
 export default function HomePage() {
-  return (
-    <main className="flex min-h-screen items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-sage-700">Indigo Harts</h1>
-        <p className="mt-2 text-lg text-gray-600">Admin Portal</p>
-      </div>
-    </main>
-  );
+  redirect('/dashboard');
 }
