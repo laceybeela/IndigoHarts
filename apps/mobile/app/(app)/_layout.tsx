@@ -1,8 +1,8 @@
-import { Redirect } from 'expo-router';
+import { Redirect, Stack } from 'expo-router';
 import { View, ActivityIndicator } from 'react-native';
 import { useAuth } from '@indigo-harts/hooks';
 
-export default function IndexScreen() {
+export default function AppLayout() {
   const { user, isLoading } = useAuth();
 
   if (isLoading) {
@@ -13,9 +13,9 @@ export default function IndexScreen() {
     );
   }
 
-  if (user) {
-    return <Redirect href="/(app)/jobs" />;
+  if (!user) {
+    return <Redirect href="/(auth)/login" />;
   }
 
-  return <Redirect href="/(auth)/login" />;
+  return <Stack screenOptions={{ headerShown: false }} />;
 }
