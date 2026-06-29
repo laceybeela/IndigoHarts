@@ -9,10 +9,12 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
+    "@indigo-harts/services": "workspace:*",
+    "@indigo-harts/types": "workspace:*"
+  },
+  "peerDependencies": {
     "@tanstack/react-query": "^5.62.0",
     "@supabase/supabase-js": "^2.47.0",
-    "@indigo-harts/services": "workspace:*",
-    "@indigo-harts/types": "workspace:*",
     "react": "^18.3.0 || ^19.0.0"
   },
   "devDependencies": {
