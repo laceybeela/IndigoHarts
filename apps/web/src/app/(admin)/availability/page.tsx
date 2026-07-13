@@ -136,19 +136,28 @@ export default function AvailabilityPage() {
                   </td>
                   {dates.map((date) => {
                     const cell = getCell(emp.id, date);
-                    const available = cell?.available ?? false;
+                    const isAvailable = cell?.available === true;
+                    const isUnavailable = cell?.available === false;
                     return (
                       <td key={date} className="px-3 py-3 text-center">
                         <button
                           onClick={() => handleToggle(emp.id, date)}
                           className={`h-8 w-8 rounded-full border-2 transition-colors ${
-                            available
+                            isAvailable
                               ? 'border-sage-500 bg-sage-100 text-sage-700'
+                              : isUnavailable
+                              ? 'border-red-300 bg-red-50 text-red-500'
                               : 'border-gray-200 bg-gray-50 text-gray-400'
                           }`}
-                          title={available ? 'Available' : 'Unavailable'}
+                          title={
+                            isAvailable
+                              ? 'Available'
+                              : isUnavailable
+                              ? 'Unavailable (marked off)'
+                              : 'Not set'
+                          }
                         >
-                          {available ? 'Y' : ''}
+                          {isAvailable ? 'Y' : isUnavailable ? 'N' : ''}
                         </button>
                       </td>
                     );

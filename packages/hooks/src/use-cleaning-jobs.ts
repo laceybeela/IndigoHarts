@@ -4,6 +4,7 @@ import {
   getCleaningJobs,
   getCleaningJobById,
   getMyJobs,
+  getMyCompletedJobs,
   createCleaningJob,
   updateJobStatus,
 } from '@indigo-harts/services';
@@ -44,6 +45,17 @@ export function useMyJobs() {
   });
 }
 
+export function useMyCompletedJobs() {
+  const { client, user } = useAuth();
+  return useQuery({
+    queryKey: ['my-completed-jobs', user?.id],
+    queryFn: () => getMyCompletedJobs(client, user!.id),
+    staleTime: STALE_TIME,
+    gcTime: GC_TIME,
+    enabled: !!user,
+  });
+}
+
 export function useCreateJob() {
   const { client } = useAuth();
   const queryClient = useQueryClient();
@@ -64,6 +76,7 @@ export function useUpdateJobStatus() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cleaning-jobs'] });
       queryClient.invalidateQueries({ queryKey: ['my-jobs'] });
+      queryClient.invalidateQueries({ queryKey: ['my-completed-jobs'] });
     },
   });
 }

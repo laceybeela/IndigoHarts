@@ -15,7 +15,7 @@ export default function ProfileScreen() {
 
   return (
     <View className="flex-1 bg-warm-white">
-      <ScreenHeader title="Profile" showBack />
+      <ScreenHeader title="Profile" />
       <View className="p-4">
         <Card>
           <View className="items-center py-4">

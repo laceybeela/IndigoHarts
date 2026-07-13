@@ -1,7 +1,7 @@
 import { useMemo, useCallback } from 'react';
-import { View, Text, SectionList, Pressable, RefreshControl } from 'react-native';
+import { View, Text, FlatList, Pressable, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useMyJobs } from '@indigo-harts/hooks';
+import { useMyCompletedJobs } from '@indigo-harts/hooks';
 import type { CleaningJobWithRelations } from '@indigo-harts/types';
 import {
   Card,
@@ -10,16 +10,6 @@ import {
   EmptyState,
 } from '@/components/ui';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-function isToday(dateStr: string) {
-  const today = new Date();
-  const date = new Date(dateStr + 'T00:00:00');
-  return (
-    date.getFullYear() === today.getFullYear() &&
-    date.getMonth() === today.getMonth() &&
-    date.getDate() === today.getDate()
-  );
-}
 
 function formatDate(dateStr: string) {
   const date = new Date(dateStr + 'T00:00:00');
@@ -93,29 +83,9 @@ function JobCard({ job }: { job: CleaningJobWithRelations }) {
   );
 }
 
-export default function MyJobsScreen() {
-  const { data: jobs, isLoading, refetch, isRefetching } = useMyJobs();
+export default function HistoryScreen() {
+  const { data: jobs, isLoading, refetch, isRefetching } = useMyCompletedJobs();
   const insets = useSafeAreaInsets();
-
-  const sections = useMemo(() => {
-    if (!jobs?.length) return [];
-
-    const todayJobs: CleaningJobWithRelations[] = [];
-    const upcomingJobs: CleaningJobWithRelations[] = [];
-
-    for (const job of jobs) {
-      if (isToday(job.scheduled_date)) {
-        todayJobs.push(job);
-      } else {
-        upcomingJobs.push(job);
-      }
-    }
-
-    const result = [];
-    if (todayJobs.length) result.push({ title: 'Today', data: todayJobs });
-    if (upcomingJobs.length) result.push({ title: 'Upcoming', data: upcomingJobs });
-    return result;
-  }, [jobs]);
 
   const onRefresh = useCallback(() => {
     refetch();
@@ -130,24 +100,19 @@ export default function MyJobsScreen() {
         style={{ paddingTop: insets.top + 8 }}
       >
         <Text className="font-poppins-bold text-xl text-gray-900">
-          My Jobs
+          History
         </Text>
       </View>
-      <SectionList
-        sections={sections}
+      <FlatList
+        data={jobs}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <JobCard job={item} />}
-        renderSectionHeader={({ section }) => (
-          <Text className="mb-2 mt-4 font-poppins-semibold text-sm uppercase tracking-wide text-gray-500">
-            {section.title}
-          </Text>
-        )}
         contentContainerStyle={{ padding: 16, paddingBottom: 32 }}
         ListEmptyComponent={
           <EmptyState
-            icon="✨"
-            title="No Jobs"
-            message="You don't have any assigned jobs right now."
+            icon="✅"
+            title="No Completed Jobs"
+            message="Jobs you've finished will appear here."
           />
         }
         refreshControl={

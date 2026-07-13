@@ -8,3 +8,4 @@ export * from './checklists';
 export * from './employee-availability';
 export * from './sms';
 export * from './storage';
+export * from './property-photos';

@@ -24,14 +24,20 @@ export function useAllUsers(activeOnly = true) {
 }
 
 export function useCreateEmployee() {
-  const { client } = useAuth();
+  const { session } = useAuth();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (data: { name: string; email: string; phone?: string; password: string }) => {
-      const { data: result, error } = await client.functions.invoke('create-employee', {
-        body: data,
+      const res = await fetch('/api/create-employee', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session?.access_token}`,
+        },
+        body: JSON.stringify(data),
       });
-      if (error) throw error;
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error || 'Failed to create employee');
       return result;
     },
     onSuccess: () => {

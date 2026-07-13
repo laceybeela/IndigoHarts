@@ -37,6 +37,17 @@ export async function getMyJobs(client: SupabaseClient, userId: string) {
   return data;
 }
 
+export async function getMyCompletedJobs(client: SupabaseClient, userId: string) {
+  const { data, error } = await client
+    .from('cleaning_jobs')
+    .select('*, property:properties(*), stay:stays(*, guest:guests(*)), job_checklists(*, items:job_checklist_items(*))')
+    .eq('assigned_employee_id', userId)
+    .eq('status', 'completed')
+    .order('completed_at', { ascending: false });
+  if (error) throw error;
+  return data;
+}
+
 export async function createCleaningJob(client: SupabaseClient, job: CreateCleaningJob) {
   const { data, error } = await client
     .from('cleaning_jobs')
