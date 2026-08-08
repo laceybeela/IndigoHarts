@@ -34,6 +34,9 @@ Thumbs.db
 # Testing
 coverage/
 
+# Credentials
+twilio-creds.txt
+
 # Misc
 *.log
 *.tsbuildinfo

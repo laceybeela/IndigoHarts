@@ -15,8 +15,7 @@
       "bundleIdentifier": "com.indigoharts.app",
       "infoPlist": {
         "NSAppTransportSecurity": {
-          "NSAllowsLocalNetworking": true,
-          "NSAllowsArbitraryLoads": true
+          "NSAllowsLocalNetworking": true
         }
       }
     },
@@ -26,8 +25,14 @@
       },
       "package": "com.indigoharts.app"
     },
+    "extra": {
+      "eas": {
+        "projectId": "afcb43c9-4379-406c-9740-d649bf3aab2b"
+      }
+    },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-dev-client"
     ]
   }
 }

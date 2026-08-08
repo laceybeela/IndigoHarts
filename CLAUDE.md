@@ -84,3 +84,8 @@ pnpm db:types         # Regenerate database types from Supabase
 - Font: Poppins (300-700 weights)
 - Border radius: 12px default
 - Use existing UI components from `apps/web/src/components/ui/` or `apps/mobile/src/components/ui/`
+
+## Launch Checklist
+- [x] Privacy Policy & Terms of Service
+- [x] Disable self-signup in Supabase
+- [x] EAS Build config + iOS ATS security fix (EAS secrets set on @laceybeela/indigo-harts)

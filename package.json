@@ -9,6 +9,9 @@
     "typecheck": "turbo run typecheck",
     "lint": "turbo run lint",
     "clean": "turbo run clean",
+    "build:mobile:dev": "cd apps/mobile && eas build --profile development --platform all",
+    "build:mobile:preview": "cd apps/mobile && eas build --profile preview --platform all",
+    "build:mobile:prod": "cd apps/mobile && eas build --profile production --platform all",
     "db:reset": "supabase db reset",
     "db:types": "supabase gen types typescript --local > packages/types/src/database.types.ts"
   },

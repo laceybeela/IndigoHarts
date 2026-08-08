@@ -34,46 +34,75 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    // ==================== MOCK IMPLEMENTATION ====================
-    // In production, replace this with actual Twilio API call:
-    //
-    // const twilioSid = Deno.env.get('TWILIO_ACCOUNT_SID');
-    // const twilioToken = Deno.env.get('TWILIO_AUTH_TOKEN');
-    // const twilioPhone = Deno.env.get('TWILIO_PHONE_NUMBER');
-    //
-    // const response = await fetch(
-    //   `https://api.twilio.com/2010-04-01/Accounts/${twilioSid}/Messages.json`,
-    //   {
-    //     method: 'POST',
-    //     headers: {
-    //       'Authorization': `Basic ${btoa(`${twilioSid}:${twilioToken}`)}`,
-    //       'Content-Type': 'application/x-www-form-urlencoded',
-    //     },
-    //     body: new URLSearchParams({
-    //       To: smsLog.recipient_phone,
-    //       From: twilioPhone,
-    //       Body: smsLog.message_body,
-    //     }),
-    //   }
-    // );
+    // Twilio credentials from Edge Function secrets
+    const twilioSid = Deno.env.get('TWILIO_ACCOUNT_SID');
+    const twilioToken = Deno.env.get('TWILIO_AUTH_TOKEN');
+    const twilioPhone = Deno.env.get('TWILIO_PHONE_NUMBER');
 
-    console.log(`[MOCK SMS] To: ${smsLog.recipient_phone}`);
-    console.log(`[MOCK SMS] Body: ${smsLog.message_body}`);
+    if (!twilioSid || !twilioToken || !twilioPhone) {
+      await supabaseAdmin
+        .from('sms_log')
+        .update({ status: 'failed' })
+        .eq('id', smsLogId);
 
-    // Simulate success
-    const mockTwilioSid = `SM_MOCK_${Date.now()}`;
+      return new Response(
+        JSON.stringify({ error: 'Twilio credentials are not configured' }),
+        {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        }
+      );
+    }
 
-    // Update SMS log with result
+    // Send SMS via Twilio API
+    const twilioResponse = await fetch(
+      `https://api.twilio.com/2010-04-01/Accounts/${twilioSid}/Messages.json`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Basic ${btoa(`${twilioSid}:${twilioToken}`)}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          To: smsLog.recipient_phone,
+          From: twilioPhone,
+          Body: smsLog.message_body,
+        }),
+      }
+    );
+
+    const twilioData = await twilioResponse.json();
+
+    if (!twilioResponse.ok) {
+      // Twilio returned an error - mark as failed
+      await supabaseAdmin
+        .from('sms_log')
+        .update({ status: 'failed' })
+        .eq('id', smsLogId);
+
+      return new Response(
+        JSON.stringify({
+          error: 'Twilio API error',
+          detail: twilioData.message ?? 'Unknown Twilio error',
+        }),
+        {
+          status: 502,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
+    // Update SMS log with success
     await supabaseAdmin
       .from('sms_log')
       .update({
         status: 'sent',
-        twilio_sid: mockTwilioSid,
+        twilio_sid: twilioData.sid,
       })
       .eq('id', smsLogId);
 
     return new Response(
-      JSON.stringify({ message: 'SMS sent (mock)', twilio_sid: mockTwilioSid }),
+      JSON.stringify({ message: 'SMS sent', twilio_sid: twilioData.sid }),
       {
         status: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
